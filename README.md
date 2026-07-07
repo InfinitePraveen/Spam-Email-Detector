@@ -1,252 +1,123 @@
 # 📧 Spam Email Detector
 
-> **An end-to-end ML-powered spam detection system with a modern web interface**
+A lightweight spam email detector built with Python, scikit-learn, Flask, and NLP preprocessing. The project includes a training pipeline, evaluation scripts, unit tests, and a web app for classifying email text.
 
-[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Made with Jupyter](https://img.shields.io/badge/Made%20with-Jupyter-orange?style=flat&logo=Jupyter)](https://jupyter.org/try)
+## Project Structure
 
-Built an ML-powered spam email detector using **NLP** and **classification algorithms**. Cleaned text data, extracted **TF-IDF** features, and trained models (**Naive Bayes, SVM, Logistic Regression**) to classify emails. Achieved high accuracy with a **Flask web interface**, demonstrating an end-to-end pipeline from data preprocessing to deployment for real-world email filtering.
-
----
-
-## 🚀 Live Demo & Repository
-
-🔗 **GitHub Repository**: [InfinitePraveen/Spam-Email-Detector](https://github.com/InfinitePraveen/Spam-Email-Detector)
-
----
-
-## 👨‍💻 About the Creator
-
-**Praveen Kumar**  
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/infinitepraveen)
-
-This project was conceptualized, developed, and implemented entirely by me, **Praveen Kumar**. I designed the architecture, built the machine learning pipeline, created the web interface, and integrated all components into a complete, production-ready system.
-
-**Acknowledgments for Assistance**:
-- **DeepSeek AI** and **GitHub Copilot** provided invaluable assistance with code optimization, debugging, and web interface design, enhancing the overall quality and functionality of the project.
-
----
-
-## 📊 Project Overview
-
-This project demonstrates a complete **machine learning lifecycle** for text classification:
-
-1. **Data Processing**: Cleaning and preprocessing email text data
-2. **Feature Engineering**: TF-IDF vectorization with n-gram support
-3. **Model Training**: Multiple algorithms with hyperparameter tuning
-4. **Evaluation**: Comprehensive metrics and visualization
-5. **Deployment**: Flask web application and RESTful API
-
-### Key Features
-
-- ✅ **Multiple ML Models**: Naive Bayes, Logistic Regression, SVM, Random Forest
-- ✅ **NLP Pipeline**: Tokenization, stopword removal, stemming/lemmatization
-- ✅ **Interactive Web Interface**: User-friendly Flask application
-- ✅ **RESTful API**: Programmatic access for integration
-- ✅ **Comprehensive Evaluation**: Metrics, confusion matrix, ROC curves
-- ✅ **Docker Support**: Containerized deployment
-- ✅ **History Tracking**: Session-based prediction history
-
----
-
-## 🏗️ Project Structure
-
-```
-spam-email-detector/
-├── notebooks/          # Jupyter notebooks for exploration
-├── src/               # Core source code
-│   ├── data_loader.py
-│   ├── preprocessor.py
-│   ├── feature_extractor.py
-│   ├── trainer.py
-│   ├── predictor.py
-│   └── utils.py
-├── web/               # Flask web application
+```text
+Spam-Email-Detector/
+├── config/                # Model and app configuration
+├── data/                  # Raw and processed datasets
+├── docs/                  # Project documentation
+├── models/                # Trained model and vectorizer files
+├── notebooks/             # Exploratory Jupyter notebooks
+├── scripts/               # Training and evaluation scripts
+│   ├── _train_model.py
+│   └── _evaluate_model.py
+├── src/                   # Core Python modules
+│   ├── _data_loader.py
+│   ├── _feature_extractor.py
+│   ├── _predictor.py
+│   ├── _preprocessor.py
+│   ├── _trainer.py
+│   └── _utils.py
+├── tests/                 # Unit tests
+├── web/                   # Flask web app
 │   ├── app.py
-│   ├── templates/
-│   └── static/
-├── models/            # Trained models and vectorizers
-├── data/              # Dataset storage
-├── tests/             # Unit tests
-├── docker/            # Docker configuration
-├── config/            # YAML configuration
-├── scripts/           # Utility scripts
-└── docs/              # Documentation
+│   ├── static/
+│   └── templates/
+├── requirements.txt
+├── Makefile
+└── README.md
 ```
 
----
+## Requirements
 
-## 📊 Dataset
+- Python 3.10+
+- pip
 
-Uses the **SMS Spam Collection Dataset** from Kaggle, containing 5,574 labeled messages.
-
-- **Ham messages**: 4,827 (86.6%)
-- **Spam messages**: 747 (13.4%)
-
-[View Dataset on Kaggle](https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset)
-
----
-
-## 🛠️ Installation & Setup
-
-### Quick Start
+## Setup
 
 ```bash
-# Clone the repository
 git clone https://github.com/InfinitePraveen/Spam-Email-Detector.git
 cd Spam-Email-Detector
-
-# Run the deployment script
-./scripts/deploy.sh
+python -m venv .venv
+source .venv/bin/activate   # On Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet')"
 ```
 
-### Manual Installation
+You can also use the Makefile helpers:
 
 ```bash
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+make install
+```
 
-# Install dependencies
-pip install -r requirements.txt
+## Train the Model
 
-# Download NLTK data
-python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet')"
+```bash
+python scripts/_train_model.py --config config/config.yml
+```
 
-# Train the model
-python scripts/train_model.py
+This trains the model and saves the artifacts to the paths defined in the configuration file.
 
-# Start the application
+## Evaluate the Model
+
+```bash
+python scripts/_evaluate_model.py --config config/config.yml --output evaluation
+```
+
+This generates evaluation metrics and charts in the `evaluation/` folder.
+
+## Run the Tests
+
+```bash
+pytest -q tests/_test_preprocessor.py tests/_test_model.py tests/_test_predictor.py
+```
+
+Or run the full suite with:
+
+```bash
+pytest -q
+```
+
+## Open the Web App
+
+Start the Flask app:
+
+```bash
 python web/app.py
 ```
 
-### Docker Deployment
+Then open your browser at:
 
-```bash
-# Build and run with Docker Compose
-docker-compose -f docker/docker-compose.yml up --build
-
-# Or use Docker directly
-docker build -t spam-detector -f docker/Dockerfile .
-docker run -p 5000:5000 spam-detector
+```text
+http://127.0.0.1:5000
 ```
 
----
-
-## 🎯 Usage
-
-### Web Interface
-
-1. Open browser: `http://localhost:5000`
-2. Enter email content in the text area
-3. Click **"Classify Email"** to get prediction
-
-### API Endpoint
+You can also use:
 
 ```bash
-curl -X POST http://localhost:5000/predict \
+make run
+```
+
+## API Usage
+
+The web app exposes a prediction endpoint:
+
+```bash
+curl -X POST http://127.0.0.1:5000/predict \
   -H "Content-Type: application/json" \
-  -d '{"email": "Congratulations! You won a prize..."}'
+  -d '{"email": "Congratulations! You won a prize! Click here to claim it."}'
 ```
 
-### Python SDK
-
-```python
-from src.predictor import SpamPredictor
-
-predictor = SpamPredictor('models/model.pkl', 'models/vectorizer.pkl')
-prediction, confidence = predictor.predict("Your email text here")
-print(f"{prediction} ({confidence:.2%})")
-```
-
----
-
-## 📈 Model Performance
-
-| Model | Accuracy | Precision | Recall | F1-Score |
-|-------|----------|-----------|--------|----------|
-| **Naive Bayes** | 97.2% | 96.8% | 97.5% | 97.1% |
-| **Logistic Regression** | **98.3%** | **98.1%** | **98.4%** | **98.2%** |
-| **SVM** | 98.5% | 98.3% | 98.6% | 98.4% |
-| **Random Forest** | 97.8% | 97.5% | 97.9% | 97.7% |
-
-**Best Model**: SVM with 98.5% accuracy
-
----
-
-## 🧪 Testing
+## Docker (Optional)
 
 ```bash
-# Run all tests
-pytest tests/ -v
-
-# Run with coverage
-pytest --cov=src tests/
+docker-compose -f docker/docker-compose.yml up --build
 ```
 
----
+## Notes
 
-## 🔧 Configuration
-
-Edit `config/config.yml` to customize:
-
-- **Data sources** (Kaggle/local)
-- **Preprocessing options**
-- **Feature extraction** (TF-IDF parameters)
-- **Model selection** and hyperparameters
-- **Web server settings**
-- **Logging configuration**
-
----
-
-## 🚢 Deployment Options
-
-- **Local**: Flask development server
-- **Production**: Gunicorn with Nginx
-- **Container**: Docker and Docker Compose
-- **Cloud**: AWS EC2, Google Cloud Run, Heroku
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
----
-
-## 🙏 Acknowledgments
-
-- **Praveen Kumar** - Project Creator and Developer
-- **DeepSeek AI** - Assistance with web interface design and code optimization
-- **GitHub Copilot** - Support with debugging and implementation
-- [NLTK](https://www.nltk.org/) - Natural Language Toolkit
-- [Scikit-learn](https://scikit-learn.org/) - Machine Learning Library
-- [Flask](https://flask.palletsprojects.com/) - Web Framework
-- [Kaggle](https://www.kaggle.com/) - Dataset Source
-
----
-
-## 📬 Contact
-
-**Praveen Kumar**  
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/infinitepraveen)
-
-Project Link: [https://github.com/InfinitePraveen/Spam-Email-Detector](https://github.com/InfinitePraveen/Spam-Email-Detector)
-
----
-
-⭐ **If you found this project helpful, please give it a star!** ⭐
+- The web app uses the trained model and vectorizer from the configured model paths.
+- If the model files are missing, the app will run in a limited/demo mode until training is completed.
