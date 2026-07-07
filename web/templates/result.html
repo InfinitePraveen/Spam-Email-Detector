@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classification Result - Spam Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>📧 Spam Detector</h1>
+                <p class="subtitle">AI-powered email classification</p>
+            </div>
+            <nav>
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="{{ url_for('about') }}">About</a>
+                <a href="{{ url_for('history') }}">History</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="card result-container">
+                <div class="result-header">
+                    <h2>Classification Result</h2>
+                    <p class="timestamp">{{ timestamp }}</p>
+                </div>
+
+                <div class="result-content">
+                    <div class="prediction {{ result.lower() }}">
+                        <div class="prediction-icon">
+                            {% if result.lower() == 'spam' %}
+                                ⚠️
+                            {% else %}
+                                ✅
+                            {% endif %}
+                        </div>
+                        <div class="prediction-text">
+                            <h4>This email is <strong>{{ result }}</strong></h4>
+                            <p>Confidence: <span class="confidence">{{ "{:.1%}".format(confidence) }}</span></p>
+                        </div>
+                    </div>
+
+                    <div class="email-content">
+                        <h4>Email Content:</h4>
+                        <div class="email-text">{{ email_preview }}</div>
+                    </div>
+
+                    <div class="confidence-bar">
+                        <div class="bar" style="width: {{ confidence * 100 }}%; 
+                            background: {% if result.lower() == 'spam' %}linear-gradient(90deg, #ff6b6b, #ee5a24){% else %}linear-gradient(90deg, #00b894, #00a86b){% endif %}">
+                        </div>
+                        <div class="confidence-labels">
+                            <span>Low Confidence</span>
+                            <span>High Confidence</span>
+                        </div>
+                    </div>
+
+                    <div class="recommendation">
+                        {% if result.lower() == 'spam' %}
+                            <div class="warning">
+                                <strong>⚠️ Warning:</strong> This email appears to be spam. Please do not click on any links or download any attachments.
+                            </div>
+                        {% else %}
+                            <div class="success">
+                                <strong>✅ Safe:</strong> This email appears to be legitimate (ham). You can proceed with caution.
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="action-buttons">
+                        <a href="{{ url_for('index') }}" class="btn btn-primary">Classify Another Email</a>
+                        <button onclick="window.print()" class="btn btn-secondary">Print Result</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card history-container">
+                <h3>Recent Predictions</h3>
+                <div class="history-list">
+                    {% for item in history[:5] %}
+                    <div class="history-item">
+                        <span class="history-email">{{ item.email }}</span>
+                        <span class="history-prediction {{ item.prediction.lower() }}">
+                            {{ item.prediction }}
+                        </span>
+                        <span class="history-confidence">{{ "{:.1%}".format(item.confidence) }}</span>
+                        <span class="history-time">{{ item.timestamp }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                <a href="{{ url_for('history') }}" class="btn btn-secondary">View Full History</a>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Spam Email Detector | Built with ❤️ using Flask & Scikit-learn</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
