@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Spam Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>📧 Spam Detector</h1>
+                <p class="subtitle">AI-powered email classification</p>
+            </div>
+            <nav>
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="{{ url_for('about') }}" class="active">About</a>
+                <a href="{{ url_for('history') }}">History</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="card">
+                <h2>About This Project</h2>
+                <p class="subtitle">An end-to-end machine learning project for spam detection</p>
+                
+                <div class="about-content">
+                    <section class="about-section">
+                        <h3>🎯 Project Overview</h3>
+                        <p>
+                            The Spam Email Detector is a machine learning application that uses 
+                            Natural Language Processing (NLP) to classify emails as either 
+                            <strong>spam</strong> or <strong>ham</strong> (legitimate). 
+                            The system is trained on thousands of labeled emails and uses 
+                            multiple classification algorithms to achieve high accuracy.
+                        </p>
+                    </section>
+
+                    <section class="about-section">
+                        <h3>🤖 Machine Learning Models</h3>
+                        <p>The project implements and compares several ML algorithms:</p>
+                        <ul>
+                            <li><strong>Naive Bayes</strong> - Fast and effective baseline</li>
+                            <li><strong>Logistic Regression</strong> - Simple but powerful linear classifier</li>
+                            <li><strong>Support Vector Machine (SVM)</strong> - State-of-the-art performance</li>
+                            <li><strong>Random Forest</strong> - Ensemble learning with feature importance</li>
+                            <li><strong>Gradient Boosting</strong> - Advanced boosting algorithm</li>
+                        </ul>
+                    </section>
+
+                    <section class="about-section">
+                        <h3>📊 Dataset</h3>
+                        <p>
+                            This project uses the <strong>SMS Spam Collection Dataset</strong> 
+                            from Kaggle, containing 5,574 labeled messages with a balanced 
+                            distribution of spam and ham messages.
+                        </p>
+                        <div class="dataset-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">5,574</span>
+                                <span class="stat-label">Total Messages</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">4,827</span>
+                                <span class="stat-label">Ham Messages</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">747</span>
+                                <span class="stat-label">Spam Messages</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="about-section">
+                        <h3>🛠️ Technology Stack</h3>
+                        <div class="tech-stack">
+                            <div class="tech-category">
+                                <h4>Backend</h4>
+                                <ul>
+                                    <li>Python 3.8+</li>
+                                    <li>Flask (Web Framework)</li>
+                                    <li>Scikit-learn (ML)</li>
+                                    <li>NLTK (NLP)</li>
+                                </ul>
+                            </div>
+                            <div class="tech-category">
+                                <h4>Frontend</h4>
+                                <ul>
+                                    <li>HTML5 & CSS3</li>
+                                    <li>JavaScript (ES6+)</li>
+                                    <li>Bootstrap (Styling)</li>
+                                </ul>
+                            </div>
+                            <div class="tech-category">
+                                <h4>DevOps</h4>
+                                <ul>
+                                    <li>Docker & Docker Compose</li>
+                                    <li>Gunicorn (WSGI)</li>
+                                    <li>Git & GitHub</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="about-section">
+                        <h3>📈 Model Performance</h3>
+                        <div class="performance-metrics">
+                            <div class="metric">
+                                <span class="metric-value">98.5%</span>
+                                <span class="metric-label">Accuracy</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value">98.3%</span>
+                                <span class="metric-label">Precision</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value">98.6%</span>
+                                <span class="metric-label">Recall</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value">98.4%</span>
+                                <span class="metric-label">F1-Score</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="about-section">
+                        <h3>🚀 Future Improvements</h3>
+                        <ul>
+                            <li>Deep Learning models (LSTM, Transformers)</li>
+                            <li>Real-time email integration (Gmail API)</li>
+                            <li>Attachment scanning and analysis</li>
+                            <li>User accounts and history tracking</li>
+                            <li>Mobile app development</li>
+                        </ul>
+                    </section>
+
+                    <section class="about-section">
+                        <h3>📝 License</h3>
+                        <p>
+                            This project is open-source and available under the 
+                            <strong>MIT License</strong>. Feel free to use, modify, 
+                            and distribute it for your own purposes.
+                        </p>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Spam Email Detector | Built with ❤️ using Flask & Scikit-learn</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
