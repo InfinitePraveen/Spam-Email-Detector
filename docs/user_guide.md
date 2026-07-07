@@ -73,7 +73,7 @@ docker run -p 5000:5000 spam-detector
 2. **Navigate to:** `http://localhost:5000`
 3. **You'll see:** The main classification page with a clean, modern interface
 
-![Home Page](static/images/screenshot_home.png)
+![Home Page](static/images/screenshot_home.png) 
 
 ### How to Classify an Email
 
