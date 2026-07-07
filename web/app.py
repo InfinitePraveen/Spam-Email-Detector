@@ -7,6 +7,7 @@ import os
 import sys
 import logging
 from datetime import datetime
+from pathlib import Path
 from flask import Flask, render_template, request, jsonify, session
 from flask_cors import CORS
 from flask_wtf import FlaskForm
@@ -18,7 +19,7 @@ from dotenv import load_dotenv
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src._predictor import SpamPredictor
-from src._utils import setup_logging
+from src._utils import setup_logging, load_config
 
 # Load environment variables
 load_dotenv()
@@ -38,10 +39,17 @@ CORS(app)
 # Initialize predictor
 predictor = SpamPredictor()
 
-# Load model on startup
+# Load model on startup using config paths
 try:
-    predictor.load_model()
-    logger.info("Model loaded successfully!")
+    config = load_config(str(Path(__file__).resolve().parents[1] / 'config' / 'config.yml'))
+    model_path = str(Path(__file__).resolve().parents[1] / config['training']['model_path'])
+    vectorizer_path = str(Path(__file__).resolve().parents[1] / config['training']['vectorizer_path'])
+
+    if os.path.exists(model_path) and os.path.exists(vectorizer_path):
+        predictor.load_model(model_path, vectorizer_path)
+        logger.info("Model loaded successfully from %s", model_path)
+    else:
+        raise FileNotFoundError(f"Missing model files: {model_path} or {vectorizer_path}")
 except Exception as e:
     logger.error(f"Failed to load model: {e}")
     logger.warning("Running in demo mode (model not loaded)")
