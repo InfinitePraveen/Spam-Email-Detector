@@ -4,7 +4,7 @@ Spam Email Detector - Source Code Package
 
 from .data_loader import DataLoader
 from .preprocessor import TextPreprocessor
-from .feature_extractor import FeatureExtractor
+from ._feature_extractor import FeatureExtractor
 from .trainer import ModelTrainer
 from .predictor import SpamPredictor
 from .utils import setup_logging, save_model, load_model
