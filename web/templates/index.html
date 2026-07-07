@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spam Email Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>📧 Spam Detector</h1>
+                <p class="subtitle">AI-powered email classification</p>
+            </div>
+            <nav>
+                <a href="{{ url_for('index') }}" class="active">Home</a>
+                <a href="{{ url_for('about') }}">About</a>
+                <a href="{{ url_for('history') }}">History</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="hero">
+                <h2>Is this email spam or ham?</h2>
+                <p>Paste your email content below and let our AI classify it instantly.</p>
+            </div>
+
+            <div class="card form-container">
+                <form method="POST" action="{{ url_for('index') }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="form-group">
+                        <label for="email">Email Content</label>
+                        {{ form.email(class="form-control", rows="8", placeholder="Paste your email content here...") }}
+                        {% if form.email.errors %}
+                            <div class="error-message">
+                                {% for error in form.email.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        🚀 Classify Email
+                    </button>
+                </form>
+            </div>
+
+            {% if result %}
+            <div class="card result-container">
+                <div class="result-header">
+                    <h3>Prediction Result</h3>
+                </div>
+                <div class="result-content">
+                    <div class="prediction {{ result.lower() }}">
+                        <div class="prediction-icon">
+                            {% if result.lower() == 'spam' %}
+                                ⚠️
+                            {% else %}
+                                ✅
+                            {% endif %}
+                        </div>
+                        <div class="prediction-text">
+                            <h4>This email is <strong>{{ result }}</strong></h4>
+                            <p>Confidence: <span class="confidence">{{ "{:.1%}".format(confidence) }}</span></p>
+                        </div>
+                    </div>
+                    <div class="confidence-bar">
+                        <div class="bar" style="width: {{ confidence * 100 }}%; 
+                            background: {% if result.lower() == 'spam' %}linear-gradient(90deg, #ff6b6b, #ee5a24){% else %}linear-gradient(90deg, #00b894, #00a86b){% endif %}">
+                        </div>
+                    </div>
+                    <div class="recommendation">
+                        {% if result.lower() == 'spam' %}
+                            <p>⚠️ This email appears to be spam. Be cautious!</p>
+                        {% else %}
+                            <p>✅ This email appears to be legitimate (ham).</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="card error-container">
+                <div class="error-message">
+                    <span>❌</span>
+                    <p>{{ error }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if history %}
+            <div class="card history-container">
+                <h3>Recent Predictions</h3>
+                <div class="history-list">
+                    {% for item in history[:5] %}
+                    <div class="history-item">
+                        <span class="history-email">{{ item.email }}</span>
+                        <span class="history-prediction {{ item.prediction.lower() }}">
+                            {{ item.prediction }}
+                        </span>
+                        <span class="history-confidence">{{ "{:.1%}".format(item.confidence) }}</span>
+                        <span class="history-time">{{ item.timestamp }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                <form method="POST" action="{{ url_for('clear_history') }}" style="display: inline;">
+                    <button type="submit" class="btn btn-secondary">Clear History</button>
+                </form>
+            </div>
+            {% endif %}
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Spam Email Detector | Built with ❤️ using Flask & Scikit-learn</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
