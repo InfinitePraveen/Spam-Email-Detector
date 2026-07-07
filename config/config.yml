@@ -1,0 +1,124 @@
+# Configuration for Spam Email Detector
+
+# Data Configuration
+data:
+  # Dataset source: 'kaggle', 'local', or 'url'
+  source: 'kaggle'
+  kaggle_dataset: 'uciml/sms-spam-collection-dataset'
+  local_path: 'data/raw/spam.csv'
+  url: 'https://raw.githubusercontent.com/justmarkham/pydata-dc-2016/master/data/sms.tsv'
+  encoding: 'latin-1'
+  test_size: 0.2
+  random_state: 42
+
+# Preprocessing Configuration
+preprocessing:
+  lowercase: true
+  remove_punctuation: true
+  remove_numbers: true
+  remove_stopwords: true
+  use_stemming: true
+  max_text_length: 5000
+
+# Feature Extraction Configuration
+features:
+  vectorizer: 'tfidf'  # 'tfidf' or 'count'
+  max_features: 5000
+  ngram_range: [1, 2]
+  min_df: 2
+  max_df: 0.95
+  use_dimension_reduction: false
+  n_components: 100
+
+# Model Configuration
+model:
+  type: 'logistic_regression'  # naive_bayes, logistic_regression, svm, random_forest, gradient_boosting
+  hyperparameter_tuning: true
+  cv_folds: 5
+  random_state: 42
+  
+  # Model-specific parameters
+  parameters:
+    logistic_regression:
+      C: 1.0
+      solver: 'liblinear'
+      penalty: 'l2'
+      max_iter: 1000
+    
+    naive_bayes:
+      alpha: 1.0
+    
+    svm:
+      C: 1.0
+      kernel: 'linear'
+      gamma: 'scale'
+    
+    random_forest:
+      n_estimators: 100
+      max_depth: null
+      min_samples_split: 2
+    
+    gradient_boosting:
+      n_estimators: 100
+      learning_rate: 0.1
+      max_depth: 3
+
+# Training Configuration
+training:
+  save_model: true
+  model_path: 'models/spam_detector_model.pkl'
+  vectorizer_path: 'models/tfidf_vectorizer.pkl'
+  save_metrics: true
+  metrics_path: 'logs/metrics.json'
+  save_report: true
+  report_path: 'logs/model_report.txt'
+
+# Web Application Configuration
+web:
+  host: '0.0.0.0'
+  port: 5000
+  debug: false
+  secret_key: 'your-secret-key-here-change-in-production'
+  template_folder: '../web/templates'
+  static_folder: '../web/static'
+  rate_limit: 100  # requests per hour
+
+# Logging Configuration
+logging:
+  level: 'INFO'
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+  file: 'logs/app.log'
+  max_bytes: 10485760  # 10MB
+  backup_count: 5
+
+# API Configuration
+api:
+  enable_api: true
+  rate_limit: 100
+  allowed_origins: ['*']
+
+# Testing Configuration
+testing:
+  test_size: 0.2
+  random_state: 42
+  cv_folds: 5
+  metrics: ['accuracy', 'precision', 'recall', 'f1_score']
+
+# Deployment Configuration
+deployment:
+  docker_image: 'spam-detector:latest'
+  container_name: 'spam-detector-app'
+  environment: 'production'
+  health_check:
+    endpoint: '/health'
+    interval: 30
+    timeout: 10
+    retries: 3
+
+# Feature Flags
+features:
+  enable_history: true
+  enable_export: true
+  enable_batch_prediction: true
+  enable_api_docs: true
+  enable_dark_mode: false
