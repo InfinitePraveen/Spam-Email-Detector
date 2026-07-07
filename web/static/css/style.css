@@ -259,6 +259,14 @@ nav a.active {
     border-radius: 4px;
 }
 
+.bar.spam {
+    background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+}
+
+.bar.ham {
+    background: linear-gradient(90deg, #00b894, #00a86b);
+}
+
 .recommendation {
     padding: 1rem;
     background: #f8f9fa;

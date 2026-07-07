@@ -17,8 +17,8 @@ from dotenv import load_dotenv
 # Add parent directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.predictor import SpamPredictor
-from src.utils import setup_logging
+from src._predictor import SpamPredictor
+from src._utils import setup_logging
 
 # Load environment variables
 load_dotenv()

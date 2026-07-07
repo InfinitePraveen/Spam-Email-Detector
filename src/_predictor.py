@@ -26,7 +26,7 @@ class SpamPredictor:
         self.model = None
         self.vectorizer = None
         self.preprocessor = TextPreprocessor()
-        self.is_loaded = False
+        self._is_loaded = False
         
         if model_path and vectorizer_path:
             self.load_model(model_path, vectorizer_path)
@@ -47,7 +47,7 @@ class SpamPredictor:
                 self.vectorizer = joblib.load(vectorizer_path)
                 logger.info(f"Vectorizer loaded from {vectorizer_path}")
             
-            self.is_loaded = True
+            self._is_loaded = True
             
         except Exception as e:
             logger.error(f"Error loading model: {e}")
@@ -63,16 +63,12 @@ class SpamPredictor:
         Returns:
             Tuple of (prediction_label, confidence_score)
         """
-        if not self.is_loaded:
+        if not self._is_loaded:
             raise ValueError("Model not loaded. Call load_model() first.")
         
-        # Preprocess
-        cleaned_text = self.preprocessor.clean_text(text)
-        processed_text = self.preprocessor.tokenize_and_stem(cleaned_text)
-        
-        # Vectorize
+        # Vectorize using the same input style as during training
         if self.vectorizer:
-            features = self.vectorizer.transform([processed_text])
+            features = self.vectorizer.transform([text])
         else:
             raise ValueError("Vectorizer not loaded")
         
@@ -113,11 +109,11 @@ class SpamPredictor:
     
     def is_loaded(self) -> bool:
         """Check if model is loaded"""
-        return self.is_loaded
+        return self._is_loaded
     
     def get_model_info(self) -> dict:
         """Get information about the loaded model"""
-        if not self.is_loaded:
+        if not self._is_loaded:
             return {'status': 'not loaded'}
         
         return {

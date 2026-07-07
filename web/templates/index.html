@@ -69,8 +69,7 @@
                         </div>
                     </div>
                     <div class="confidence-bar">
-                        <div class="bar" style="width: {{ confidence * 100 }}%; 
-                            background: {% if result.lower() == 'spam' %}linear-gradient(90deg, #ff6b6b, #ee5a24){% else %}linear-gradient(90deg, #00b894, #00a86b){% endif %}">
+                        <div class="bar {{ 'spam' if result.lower() == 'spam' else 'ham' }}" style="width: {{ confidence * 100 }}%;">
                         </div>
                     </div>
                     <div class="recommendation">
