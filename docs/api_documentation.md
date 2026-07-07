@@ -381,12 +381,3 @@ print(f"{label} ({confidence:.2%})")
 - **Documentation:** [Full Documentation](https://spamdetector.readthedocs.io)
 
 ---
-
-## 📄 License
-
-MIT License - See [LICENSE](LICENSE) file for details.
-```
-
----
-
-This is the complete file ready to copy and paste into `/docs/api_documentation.md`. Just create the file and paste this content!
